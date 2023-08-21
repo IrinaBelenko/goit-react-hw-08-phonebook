@@ -4,6 +4,7 @@ import { ContactListItem } from './ContactListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchContacts } from 'redux/operations';
+import List from '@mui/material/List';
 
 export const ContactList = () => {
   const isLoading = useSelector(selectIsLoading);
@@ -19,11 +20,11 @@ export const ContactList = () => {
       {error && <h2>{error}</h2>}
       {isLoading && <h2>"is Loading"</h2>}
       {visibleContacts.length > 0 && (
-        <ul>
+        <List>
           {visibleContacts.map(({ id, name, number }) => (
             <ContactListItem key={id} name={name} number={number} id={id} />
           ))}
-        </ul>
+        </List>
       )}
     </>
   );
