@@ -5,24 +5,37 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { logIn } from 'redux/operations';
+import { Link, useNavigate } from 'react-router-dom';
+import { selectIsLoggedIn } from 'redux/selectors';
 
 const defaultTheme = createTheme();
 
 export const LoginForm = () => {
-  const handleSubmit = event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    isLoggedIn && navigate('/');
+  }, [isLoggedIn, navigate]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    dispatch(
+      logIn({
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+      })
+    );
   };
 
   return (
@@ -81,15 +94,10 @@ export const LoginForm = () => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link to="/register" variant="body2">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

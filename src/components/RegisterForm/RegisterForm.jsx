@@ -5,28 +5,42 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+//import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { register } from 'redux/operations';
+import { selectIsLoggedIn } from 'redux/selectors';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Copyright(props) {}
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export const RegisterForm = () => {
-  const handleSubmit = event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    isLoggedIn && navigate('/');
+  }, [isLoggedIn, navigate]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    dispatch(
+      register({
+        name: form.elements.name.value,
+        email: form.elements.email.value,
+        password: form.elements.password.value,
+      })
+    );
+    form.reset();
   };
 
   return (
@@ -54,27 +68,18 @@ export const RegisterForm = () => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -115,7 +120,7 @@ export const RegisterForm = () => {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
