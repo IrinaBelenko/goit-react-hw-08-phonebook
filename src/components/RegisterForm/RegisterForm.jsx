@@ -5,17 +5,15 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-//import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { register } from 'redux/operations';
-import { selectIsLoggedIn } from 'redux/selectors';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Copyright(props) {}
 
@@ -23,12 +21,6 @@ const defaultTheme = createTheme();
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const navigate = useNavigate();
-
-  React.useEffect(() => {
-    isLoggedIn && navigate('/');
-  }, [isLoggedIn, navigate]);
 
   const handleSubmit = e => {
     e.preventDefault();

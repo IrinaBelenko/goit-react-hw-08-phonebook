@@ -4,14 +4,37 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import Сontacts from 'pages/Сontacts';
 import { SharedLayout } from './SharedLayout/SharedLayout';
+import PublicGuards from 'guards/PublicGuards';
+import PrivateGuard from 'guards/PrivateGuard';
 
 export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route index element={<Сontacts />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route
+          index
+          element={
+            <PrivateGuard>
+              <Сontacts />
+            </PrivateGuard>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PublicGuards>
+              <Login />
+            </PublicGuards>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicGuards>
+              <Register />
+            </PublicGuards>
+          }
+        />
       </Route>
     </Routes>
   );
