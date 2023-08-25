@@ -6,6 +6,7 @@ import Сontacts from 'pages/Сontacts';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 import PublicGuards from 'guards/PublicGuards';
 import PrivateGuard from 'guards/PrivateGuard';
+import Logout from 'pages/Logout';
 
 export const App = () => {
   return (
@@ -16,6 +17,14 @@ export const App = () => {
           element={
             <PrivateGuard>
               <Сontacts />
+            </PrivateGuard>
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            <PrivateGuard>
+              <Logout />
             </PrivateGuard>
           }
         />

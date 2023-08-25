@@ -5,8 +5,12 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { NavLinkStyled } from './SharedLayout.styled';
+import { useSelector } from 'react-redux';
+import { selectIsLoggedIn } from 'redux/selectors';
 
 export const SharedLayout = () => {
+  const isAuth = useSelector(selectIsLoggedIn);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -17,8 +21,14 @@ export const SharedLayout = () => {
                 Contacts
               </NavLinkStyled>
             </Typography>
-            <NavLinkStyled to="/login">Login</NavLinkStyled>
-            <NavLinkStyled to="/register">Register</NavLinkStyled>
+            {isAuth ? (
+              <NavLinkStyled to="/logout">Logout</NavLinkStyled>
+            ) : (
+              <>
+                <NavLinkStyled to="/login">Login</NavLinkStyled>
+                <NavLinkStyled to="/register">Register</NavLinkStyled>
+              </>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
