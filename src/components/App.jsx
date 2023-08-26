@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Login from 'pages/Login';
 import Register from 'pages/Register';
@@ -7,9 +7,23 @@ import { SharedLayout } from './SharedLayout/SharedLayout';
 import PublicGuards from 'guards/PublicGuards';
 import PrivateGuard from 'guards/PrivateGuard';
 import Logout from 'pages/Logout';
+import { useDispatch } from 'react-redux';
+import { useAuth } from 'hooks/useAuth';
+import { useEffect } from 'react';
+import { refreshUser } from 'redux/operations';
 
 export const App = () => {
-  return (
+  const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+  console.log(isRefreshing);
+
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route
@@ -44,6 +58,7 @@ export const App = () => {
             </PublicGuards>
           }
         />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
